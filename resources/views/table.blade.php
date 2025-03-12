@@ -1,0 +1,49 @@
+@extends('layout.template')
+
+@section('content')
+<div class="class-card">
+
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nomor</th>
+            <th>Nama</th>
+            <th>NIM</th>
+            <th>Kelas</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Myla</td>
+            <td>522046</td>
+            <td>A</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Gege</td>
+            <td>23577</td>
+            <td>B</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Nawya</td>
+            <td>12345</td>
+            <td>C</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Angel</td>
+            <td>54321</td>
+            <td>D</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Xingxing</td>
+            <td>09876</td>
+            <td>E</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+@endsection
