@@ -37,6 +37,21 @@ class PointsController extends Controller
      */
     public function store(Request $request)
     {
+        // validate request
+        $request->validate(
+        [
+            'name' => 'required|unique:points,name',
+            'description' => 'required',
+            'geom_point' => 'required', // berdasarkan tabel apa dan kolom apa
+        ],
+        [
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name is already exists',
+            'description.required' => 'Description is required',
+            'geom_point.required' => 'Geometry point is required',
+        ]
+    );
+
         $data = [
             'geom' => $request->geom_point,
             'name' => $request->name,
@@ -45,10 +60,12 @@ class PointsController extends Controller
 
 
     // create data
-    $this->points->create($data); // proses untuk memasukkan data nya ke dalam tabel kita
+    if (!$this->points->create($data)) {
+        return redirect()->route('map')->with('error', 'Point failed to add');
+    } // proses untuk memasukkan data nya ke dalam tabel kita
 
     // redirect to map
-    return redirect()->route('map');
+    return redirect()->route('map')->with('success', 'Point has been added');
     }
 
     /**
