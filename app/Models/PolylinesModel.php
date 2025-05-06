@@ -27,6 +27,7 @@ class PolylinesModel extends Model
                 'type' => 'Feature', // data list ini akan dimasukkan ke dalam features diatas
                 'geometry' => json_decode($p->geom), // decode digunakan agar menjadi sebuah array data dan tdk ditulis dalam bentuk geojson
                 'properties' => [
+                    'id' => $p->id,
                     'name' => $p->name,
                     'description' => $p->description,
                     'length_m' => $p->length_m,
