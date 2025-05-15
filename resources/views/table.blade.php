@@ -1,48 +1,34 @@
 @extends('layout.template')
 
 @section('content')
-<div class="class-card">
+<div class="container" style="max-width: 90%; margin: auto; padding-top: 20px;">
+    <div class="card p-4 shadow-sm rounded">
 
     <table class="table table-striped">
     <thead>
         <tr>
-            <th>Nomor</th>
-            <th>Nama</th>
-            <th>NIM</th>
-            <th>Kelas</th>
+            <th>No</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Creaed At</th>
+            <th>Updated At</th>
         </tr>
     </thead>
     <tbody>
+        @foreach ($points as $p)
         <tr>
-            <td>1</td>
-            <td>Myla</td>
-            <td>522046</td>
-            <td>A</td>
+            <td>{{ $p->id }}</td>
+            <td>{{ $p->name }}</td>
+            <td>{{ $p->description }}</td>
+            <td>
+                <img src="{{ asset('storage/images/' . $p->image) }}" alt=""
+                width="200" title="{{ $p->image }}">
+            </td>
+            <td>{{ $p->created_at }}</td>
+            <td>{{ $p->updated_at }}</td>
         </tr>
-        <tr>
-            <td>2</td>
-            <td>Gege</td>
-            <td>23577</td>
-            <td>B</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Nawya</td>
-            <td>12345</td>
-            <td>C</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Angel</td>
-            <td>54321</td>
-            <td>D</td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>Xingxing</td>
-            <td>09876</td>
-            <td>E</td>
-        </tr>
+        @endforeach
     </tbody>
 </table>
 </div>

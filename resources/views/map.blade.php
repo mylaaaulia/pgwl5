@@ -49,8 +49,9 @@
                         <div class="mb-3">
                             <label for="image" class="form-label">Photo</label>
                             <input type="file" class="form-control" id="image_point" name="image"
-                            onchange="document.getElementById('preview-image-point').src = window.URL.createObjectURL(this.files[0])">
-                            <img src="" alt="" id="preview-image-point" class="img-thumbnail" width="300">
+                                onchange="document.getElementById('preview-image-point').src = window.URL.createObjectURL(this.files[0])">
+                            <img src="" alt="" id="preview-image-point" class="img-thumbnail"
+                                width="300">
                         </div>
 
                     </div>
@@ -95,8 +96,9 @@
                         <div class="mb-3">
                             <label for="image" class="form-label">Photo</label>
                             <input type="file" class="form-control" id="image_polyline" name="image"
-                            onchange="document.getElementById('preview-image-polyline').src = window.URL.createObjectURL(this.files[0])">
-                            <img src="" alt="" id="preview-image-polyline" class="img-thumbnail" width="300">
+                                onchange="document.getElementById('preview-image-polyline').src = window.URL.createObjectURL(this.files[0])">
+                            <img src="" alt="" id="preview-image-polyline" class="img-thumbnail"
+                                width="300">
                         </div>
 
                     </div>
@@ -118,7 +120,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Create Polygon</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{ route('polygons.store') }}" enctype="multipart/form-data" >
+                <form method="POST" action="{{ route('polygons.store') }}" enctype="multipart/form-data">
                     <div class="modal-body">
 
                         @csrf
@@ -142,8 +144,9 @@
                         <div class="mb-3">
                             <label for="image" class="form-label">Photo</label>
                             <input type="file" class="form-control" id="image_polygon" name="image"
-                            onchange="document.getElementById('preview-image-polygon').src = window.URL.createObjectURL(this.files[0])">
-                            <img src="" alt="" id="preview-image-polygon" class="img-thumbnail" width="300">
+                                onchange="document.getElementById('preview-image-polygon').src = window.URL.createObjectURL(this.files[0])">
+                            <img src="" alt="" id="preview-image-polygon" class="img-thumbnail"
+                                width="300">
                         </div>
 
                     </div>
@@ -242,18 +245,31 @@
                 var routedelete = "{{ route('points.destroy', ':id') }}";
                 routedelete = routedelete.replace(':id', feature.properties.id);
 
-                var popupContent = "Nama: " + feature.properties.name + "<br>" +
+                var routeedit = "{{ route('points.edit', ':id') }}";
+                routeedit = routeedit.replace(':id', feature.properties.id);
+
+                var popupContent =
+                    "Nama: " + feature.properties.name + "<br>" +
                     "Deskripsi: " + feature.properties.description + "<br>" +
-                    "Dibuat: " + feature.properties.created_at +"<br>" +
-                    "<img src='{{ asset('storage/images') }}/" + feature.properties.image + "' width='200' alt=''>"
-                    + "<br>" +
+                    "Diubah: " + feature.properties.created_at + "<br>" +
+                    "<img src='{{ asset('storage/images') }}/" + feature.properties.image +
+                    "' width='200px' alt=''>" + "<br>" +
+
+                    "<div class='row mt-4'>" +
+                    "<div class='col-6'>" +
+                    "<a href='" + routeedit + "' class='btn btn-warning btn-sm'><i class='fa-solid fa-pen-to-square'></i></a>" +
+                    "</div>" +
+                    "<div class='col-6 text-end'>" +
+
                     "<form method='POST' action='" + routedelete + "'>" +
-                    '@csrf' + '@method("DELETE")' +
-                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>"
-                    + "</form>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
+                    '@csrf' + '@method('DELETE')' +
+                    "<button type='submit' class='btn btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "</form>" +
+                    "</div>" +
+                    "</div>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
 
 
-                    layer.on({
+                layer.on({
                     click: function(e) {
                         point.bindPopup(popupContent);
                     },
@@ -275,16 +291,27 @@
                 var routedelete = "{{ route('polylines.destroy', ':id') }}";
                 routedelete = routedelete.replace(':id', feature.properties.id);
 
+                var routeedit = "{{ route('polylines.edit', ':id') }}";
+                routeedit = routeedit.replace(':id', feature.properties.id);
+
                 var popupContent = "Name: " + feature.properties.name + "<br>" +
                     "Description: " + feature.properties.description + "<br>" +
                     "Length (KM): " + feature.properties.length_km.toFixed(2) + "<br>" +
-                    "Created: " + feature.properties.created_at +"<br>" +
-                    "<img src='{{ asset('storage/images') }}/" + feature.properties.image + "' width='200' alt=''>"
-                    + "<br>" +
+                    "Created: " + feature.properties.created_at + "<br>" +
+                    "<img src='{{ asset('storage/images') }}/" + feature.properties.image +
+                    "' width='200' alt=''>" +
+                    "<br>" +
+
+                    "<div class='row mt-4'>" +
+                    "<div class='col-6'>" +
+                    "<a href='" + routeedit + "' class='btn btn-warning btn-sm'><i class='fa-solid fa-pen-to-square'></i></a>" +
+                    "</div>" +
+                    "<div class='col-6 text-end'>" +
+
                     "<form method='POST' action='" + routedelete + "'>" +
-                    '@csrf' + '@method("DELETE")' +
-                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>"
-                    + "</form>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
+                    '@csrf' + '@method('DELETE')' +
+                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "</form>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
 
                 layer.on({
                     click: function(e) {
@@ -308,18 +335,28 @@
                 var routedelete = "{{ route('polygons.destroy', ':id') }}";
                 routedelete = routedelete.replace(':id', feature.properties.id);
 
+                var routeedit = "{{ route('polygons.edit', ':id') }}";
+                routeedit = routeedit.replace(':id', feature.properties.id);
+
                 var popupContent = "Nama: " + feature.properties.name + "<br>" + "Luas (Hektar): " + feature
                     .properties
                     .area_hektar.toFixed(2) + "<br>" + "Luas (Km): " + feature.properties
                     .area_km.toFixed(2) + "br" + "<br>" + "Luas (M): " + feature.properties
                     .area_m.toFixed(2) + "br" + "Deskripsi: " + feature.properties.description + "<br>" +
-                    "Dibuat: " + feature.properties.created_at +"<br>" +
-                    "<img src='{{ asset('storage/images') }}/" + feature.properties.image + "' width='200' alt=''>"
-                    + "<br>" +
+                    "Dibuat: " + feature.properties.created_at + "<br>" +
+                    "<img src='{{ asset('storage/images') }}/" + feature.properties.image +
+                    "' width='200' alt=''>" +
+                    "<br>" +
+                    "<div class='row mt-4'>" +
+                    "<div class='col-6'>" +
+                    "<a href='" + routeedit + "' class='btn btn-warning btn-sm'><i class='fa-solid fa-pen-to-square'></i></a>" +
+                    "</div>" +
+                    "<div class='col-6 text-end'>" +
+
                     "<form method='POST' action='" + routedelete + "'>" +
-                    '@csrf' + '@method("DELETE")' +
-                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>"
-                    + "</form>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
+                    '@csrf' + '@method('DELETE')' +
+                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "</form>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
 
                 layer.on({
                     click: function(e) {

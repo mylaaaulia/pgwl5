@@ -15,7 +15,7 @@ class PolygonsController extends Controller
         $this->polygons = new PolygonsModel();
     }
 
-     public function index()
+    public function index()
     {
         //
     }
@@ -38,8 +38,8 @@ class PolygonsController extends Controller
             [
                 'name' => 'required|unique:polygons,name',
                 'description' => 'required',
-                'geom_polygon' => 'required', // berdasarkan tabel apa dan kolom apa
-                'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:100',
+                'geom_polygon' => 'required',
+                'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:50',
             ],
             [
                 'name.required' => 'Name is required',
@@ -49,19 +49,20 @@ class PolygonsController extends Controller
             ]
         );
 
-        // Create images directory if not exist
+        //Create images directory if not exists
         if (!is_dir('storage/images')) {
             mkdir('./storage/images', 0777);
-            }
+         }
 
-            // Get image file
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $name_image = time() . "_polygon." . strtolower($image->getClientOriginalExtension());
-                $image->move('storage/images', $name_image);
-            } else {
-                $name_image = null;
-            }
+         // Create image file
+         if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name_image = time() . "_polygons." . strtolower($image->getClientOriginalExtension());
+            $image->move('storage/images', $name_image);
+          } else {
+            $name_image = null;
+          }
+
 
             $data = [
                 'geom' => $request->geom_polygon,
@@ -92,7 +93,12 @@ class PolygonsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = [
+            'title' => 'Edit Polygon',
+            'id' => $id,
+        ];
+
+        return view('edit-polygon', $data);
     }
 
     /**
@@ -100,7 +106,60 @@ class PolygonsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validate request
+        $request->validate(
+        [
+            'name' => 'required|unique:polygons,name,' . $id,
+            'description' => 'required',
+            'geom_polygon' => 'required',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:50',
+        ],
+        [
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name already exists',
+            'description.required' => 'Description is required',
+            'geom_polygon.required' => 'Geometry polygon is required',
+        ]
+        );
+
+        //Create images directory if not exists
+        if (!is_dir('storage/images')) {
+            mkdir('./storage/images', 0777);
+         }
+
+         // Get old image file
+         $old_image = $this->polygons->find($id)->image;
+
+         // Get image file
+         if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name_image = time() . "_polygon." . strtolower($image->getClientOriginalExtension());
+            $image->move('storage/images', $name_image);
+
+         // Delete old image file
+         if ($old_image != null) {
+            if (file_exists('./storage/images/' . $old_image)) {
+                unlink('./storage/images/' . $old_image);
+            }
+         }
+        } else {
+            $name_image = $old_image;
+        }
+
+        $data = [
+            'geom' => $request->geom_polygon,
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => $name_image,
+        ];
+
+    // update data
+    if (!$this->polygons->find($id)->update($data)) {
+        return redirect()->route('map')->with('error', 'Polygon failed to update');
+    } // proses untuk memasukkan data nya ke dalam tabel kita
+
+    // redirect to map
+    return redirect()->route('map')->with('success', 'Polygon has been updated');
     }
 
     /**
@@ -110,11 +169,11 @@ class PolygonsController extends Controller
     {
         $imagefile = $this->polygons->find($id)->image;
 
-        if (!$this->polygons->destroy($id)) {
+        if (!$this->polygons->destroy($id)){
             return redirect()->route('map')->with('error', 'Polygon failed to delete');
         }
 
-        // delete image file
+        //Delete image file
         if ($imagefile != null) {
             if (file_exists('./storage/images/' . $imagefile)) {
                 unlink('./storage/images/' . $imagefile);
