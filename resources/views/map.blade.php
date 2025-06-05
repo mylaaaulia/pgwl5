@@ -266,7 +266,7 @@
                     "<button type='submit' class='btn btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
                     "</form>" +
                     "</div>" +
-                    "</div>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
+                    "</div>" + "<br>" + "<p>Dibuat oleh: " + feature.properties.user_created + "</p>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
 
 
                 layer.on({
@@ -311,7 +311,9 @@
                     "<form method='POST' action='" + routedelete + "'>" +
                     '@csrf' + '@method('DELETE')' +
                     "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
-                    "</form>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
+                    "</form>" +
+                    "</div>" +
+                    "</div>" + "<br>" + "<p>Dibuat oleh: " + feature.properties.user_created + "</p>";; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
 
                 layer.on({
                     click: function(e) {
@@ -356,7 +358,9 @@
                     "<form method='POST' action='" + routedelete + "'>" +
                     '@csrf' + '@method('DELETE')' +
                     "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
-                    "</form>"; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
+                    "</form>" +
+                    "</div>" +
+                    "</div>" + "<br>" + "<p>Dibuat oleh: " + feature.properties.user_created + "</p>";; // btn-danger untuk warna merah, btn-sm untuk ngecilin button
 
                 layer.on({
                     click: function(e) {
